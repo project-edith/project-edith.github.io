@@ -1,0 +1,1426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EDITH | Hierarchical Policies from Verbal and Egocentric Human Signals for Natural Human-Robot Interaction</title>
+    <meta
+      name="description"
+      content="EDITH helps robots infer human intent from first-person view, gaze, and speech, then act on that intent through a hierarchical policy."
+    >
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://project-edith.github.io/">
+    <meta property="og:title" content="EDITH | Hierarchical Policies from Verbal and Egocentric Human Signals for Natural Human-Robot Interaction">
+    <meta
+      property="og:description"
+      content="EDITH helps robots infer human intent from first-person view, gaze, and speech, then act on that intent through a hierarchical policy."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://project-edith.github.io/">
+    <meta property="og:site_name" content="EDITH">
+    <meta property="og:image" content="https://project-edith.github.io/assets/preview.png">
+    <meta property="og:image:width" content="950">
+    <meta property="og:image:height" content="756">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="EDITH | Hierarchical Policies from Verbal and Egocentric Human Signals for Natural Human-Robot Interaction">
+    <meta
+      name="twitter:description"
+      content="EDITH helps robots infer human intent from first-person view, gaze, and speech, then act on that intent through a hierarchical policy."
+    >
+    <meta name="twitter:image" content="https://project-edith.github.io/assets/preview.png">
+    <link rel="icon" href="assets/icon.png?v=20260605" type="image/png">
+    <link rel="apple-touch-icon" href="assets/icon.png?v=20260605">
+    <link rel="preload" as="image" href="assets/hero-edith.png">
+    <link rel="preload" as="video" href="assets/videos/main.mp4" type="video/mp4">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WE48BRQSDJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "G-WE48BRQSDJ");
+    </script>
+    <link rel="stylesheet" href="styles.css?v=note-bg-noresources-20260610">
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          processEscapes: true
+        },
+        options: {
+          skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </head>
+  <body class="classic-project-page">
+    <main id="top">
+      <section class="hero" aria-label="EDITH overview">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-content">
+          <h1>EDITH</h1>
+          <p class="hero-subtitle">
+            Hierarchical Policies from Verbal and Egocentric Human Signals for
+            Natural Human-Robot Interaction
+          </p>
+          <div class="hero-actions" aria-label="Project links">
+            <a class="button primary" href="#method">Explore Method</a>
+            <a class="button secondary" href="#results">View Results</a>
+            <a class="button secondary" href="#demos">Watch Demos</a>
+            <a class="button secondary" href="https://arxiv.org/abs/2606.10276" target="_blank" rel="noopener" data-analytics-event="click_paper" data-resource-kind="paper">Paper</a>
+          </div>
+        </div>
+        <div class="hero-player" aria-label="Featured EDITH demo">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="assets/posters/main.jpg"
+          >
+            <source src="assets/videos/main.mp4" type="video/mp4">
+          </video>
+          <div class="hero-player-overlay">
+            <span>Verbal Instruction + Nonverbal Signals</span>
+            <strong>\(C^{\mathrm{ego}}, \ell \rightarrow Q \rightarrow a_t\)</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-band" id="overview" aria-label="Project summary">
+        <div class="section-inner paper-title-block">
+          <h1>EDITH</h1>
+          <h2>Hierarchical Policies from Verbal and Egocentric Human Signals for Natural Human-Robot Interaction</h2>
+          <p class="paper-authors">
+            <a href="https://dgjun32.github.io/" target="_blank" rel="noopener">Dongjun Lee</a><sup>*1</sup>,
+            <a href="https://juheonchoi.com" target="_blank" rel="noopener">Juheon Choi</a><sup>*1</sup>,
+            <a href="https://donkeyu99.github.io/" target="_blank" rel="noopener">Dong Kyu Shin</a><sup>*2</sup>,
+            <a href="https://sinjae.me/" target="_blank" rel="noopener">Sinjae Kang</a><sup>1</sup>,
+            <a href="https://sites.google.com/view/kiminlee" target="_blank" rel="noopener">Kimin Lee</a><sup>1,3</sup>
+          </p>
+          <p class="paper-contribution-note">* Equal contribution</p>
+          <p class="paper-affiliations">
+            <span><sup>1</sup> KAIST</span>
+            <span><sup>2</sup> Seoul National University</span>
+            <span><sup>3</sup> Config</span>
+          </p>
+          <nav class="paper-links" aria-label="Project resources">
+            <a href="https://arxiv.org/abs/2606.10276" target="_blank" rel="noopener" data-analytics-event="click_paper" data-resource-kind="paper">Paper</a>
+            <a class="is-disabled" aria-disabled="true" data-analytics-event="click_code" data-resource-kind="code">
+              <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              Code <span class="link-soon">(Coming soon)</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="section-inner intro-video-block" aria-label="Introduction video">
+          <video controls playsinline preload="metadata">
+            <source src="assets/videos/edith_5min_presentation_final_captioned.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="section-inner summary-grid">
+          <article class="approach-overview">
+            <h2>Motivation &amp; Key Idea</h2>
+            <figure class="overview-figure-frame">
+              <img
+                src="assets/overview_figure.png"
+                alt="Overview figure showing EDITH's hardware system, hierarchical policy, and robot execution flow."
+              >
+            </figure>
+            <div class="overview-caption-grid" aria-label="Approach overview comparison">
+              <p class="section-lede">
+                Language-conditioned policies require humans to fully verbalize
+                their intent through language, which is often cumbersome and
+                imprecise.
+              </p>
+              <p class="section-lede">
+                To enable robots to understand human nonverbal signals as well,
+                we use the human's egocentric view and gaze as inputs to the
+                robot control policy.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section method-section" id="method">
+        <div class="section-inner">
+          <div class="section-heading wide">
+            <h2>Method</h2>
+          </div>
+
+          <div class="method-section-stack">
+            <article class="method-subsection hardware-system-block">
+              <div class="method-subsection-heading">
+                <h3>Hardware System</h3>
+              </div>
+              <p class="method-subsection-copy">
+                We build a hardware system that streams the human's first-person view,
+                gaze, and speech in real time, and synchronizes them with the robot's
+                observations.
+              </p>
+              <div class="hardware-video-grid" aria-label="Hardware system videos">
+                <figure class="hardware-video-card">
+                  <video autoplay muted loop playsinline preload="metadata">
+                    <source src="assets/videos/glass.mp4" type="video/mp4">
+                  </video>
+                  <figcaption>
+                    Capturing human signals via smartglasses.
+                  </figcaption>
+                </figure>
+                <figure class="hardware-video-card">
+                  <video autoplay muted loop playsinline preload="metadata">
+                    <source src="assets/videos/robot.mp4" type="video/mp4">
+                  </video>
+                  <figcaption>Bimanual Robot</figcaption>
+                </figure>
+              </div>
+              <div class="hardware-signal-note">
+                <p><strong>Why first-person view and gaze?</strong></p>
+                <p>
+                  First-person view and gaze represent human nonverbal signals by
+                  capturing what the human is doing and where their attention is
+                  focused. Together, these streams provide cues for a robot policy to
+                  infer the human's underlying intent and needs.
+                </p>
+                <p><strong>Capturing human signals via smartglasses.</strong></p>
+                <p>
+                  Using
+                  <a href="https://www.projectaria.com/" target="_blank" rel="noreferrer">Project Aria glasses</a>,
+                  EDITH streams first-person RGB, gaze, and speech to the robot server,
+                  transcribes speech into \(\ell_t\), and synchronizes the
+                  signals with robot observations \(o_t\) to produce
+                  \((C_t^{\mathrm{ego}}, \ell_t, o_t)\)
+                  at each timestep.
+                </p>
+              </div>
+            </article>
+
+            <!--
+            <article class="method-subsection policy-noisy-block" aria-label="Noisy human signals">
+              <p class="policy-noisy-kicker">Human signals are noisy.</p>
+              <figure class="policy-noisy-video-frame">
+                <video
+                  class="policy-noisy-video"
+                  autoplay
+                  muted
+                  playsinline
+                  preload="metadata"
+                  data-video-sequence="assets/videos/noisy1.mp4,assets/videos/noisy2.mp4,assets/videos/noisy3.mp4,assets/videos/noisy5.mp4,assets/videos/noisy6.mp4"
+                  aria-label="Sequential noisy human signal examples"
+                >
+                  <source src="assets/videos/noisy1.mp4" type="video/mp4">
+                </video>
+              </figure>
+              <p class="method-subsection-copy policy-noisy-summary">
+                Human signals \((C_t^{\mathrm{ego}}, \ell_t)\)
+                are rich but noisy: short intent expressions are often mixed with
+                unrelated ongoing activities. We therefore design a
+                <strong>hierarchical policy</strong> that decouples inferring human
+                intent from producing low-level robot actions.
+              </p>
+            </article>
+            -->
+
+            <article class="method-subsection policy-design-block">
+              <div class="method-subsection-heading">
+                <h3>Policy Design</h3>
+              </div>
+              <p class="method-subsection-copy">
+                Human signals contain rich information but are often noisy and
+                transient<button
+                  class="noisy-help-button"
+                  type="button"
+                  data-noisy-modal-open
+                  aria-label="Why are human signals noisy?"
+                >?</button>. To effectively process such signals, we propose a
+                hierarchical policy that decouples inferring the human's intent
+                from producing low-level actions. It consists of a
+                <button class="method-inline-step-link" type="button" data-method-figure-link="high-level">
+                  high-level policy \(\pi_h\)
+                </button>
+                and a
+                <button class="method-inline-step-link" type="button" data-method-figure-link="low-level">
+                  low-level policy \(\pi_l\)
+                </button>.
+              </p>
+              <div class="method-figure-viewer">
+                <figure class="method-figure-stage">
+                  <img
+                    id="method-figure-image"
+                    src="assets/figure_policy_input_output_0.png"
+                    alt="EDITH method architecture"
+                    width="2013"
+                    height="800"
+                  >
+                  <video
+                    id="method-figure-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    hidden
+                    aria-label="EDITH method policy video"
+                  ></video>
+                </figure>
+                <div class="method-figure-controls" role="tablist" aria-label="Method figure steps">
+                  <button class="method-figure-tab is-active" type="button" data-method-figure-step="overall" role="tab" aria-selected="true">
+                    Overall Design
+                  </button>
+                  <button class="method-figure-tab" type="button" data-method-figure-step="signals" role="tab" aria-selected="false">
+                    Human Signals
+                  </button>
+                  <button class="method-figure-tab" type="button" data-method-figure-step="high-level" role="tab" aria-selected="false">
+                    High-level Policy
+                  </button>
+                  <button class="method-figure-tab" type="button" data-method-figure-step="low-level" role="tab" aria-selected="false">
+                    Low-level Policy
+                  </button>
+                </div>
+                <div class="method-figure-note" aria-live="polite">
+                  <p class="method-figure-note-title" id="method-figure-note-title">
+                    Overall Design
+                  </p>
+                  <div class="method-figure-note-body" id="method-figure-note-text">
+                    <p>
+                      EDITH converts verbal instructions and egocentric context into
+                      instruction-keyframe subtasks, stores them in \(Q\), and executes
+                      each subtask with the robot policy.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section result-section" id="results">
+        <div class="section-inner">
+          <div class="section-heading wide">
+            <h2>Results</h2>
+            <p class="section-lede">
+              EDITH improves task success while reducing the user's instruction burden.
+            </p>
+            <p>
+              Results are reported with success rate (SR) and task progress (TP)
+              over 48 trials per task per method, plus a user study on instruction workload.
+            </p>
+          </div>
+
+          <div class="baseline-definitions" data-animate>
+            <h3>Baselines</h3>
+            <dl>
+              <div class="baseline-item">
+                <dt>\(\pi_l^{\mathrm{lang}}\)</dt>
+                <dd>\(\pi_{0.5}\) finetuned with task-specific demonstration data.</dd>
+              </div>
+              <div class="baseline-item">
+                <dt>\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</dt>
+                <dd>Hierarchical policy employing a VLM as the high-level planner, similar to Hi Robot.</dd>
+              </div>
+              <div class="baseline-item">
+                <dt>\(\pi_l^{\mathrm{ego+lang}}\)</dt>
+                <dd>\(\pi_{0.5}\) finetuned with task-specific demonstration data, additionally conditioned on egocentric context.</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="animated-results" data-animate>
+            <article class="chart-panel performance-chart">
+              <div class="chart-header">
+                <div>
+                  <span>Main Results</span>
+                </div>
+              </div>
+
+              <p class="main-results-claim">
+                EDITH achieves 59.7% average success rate and 84.7% task
+                progress by translating nonverbal human signals into
+                keyframe-grounded subtasks.
+              </p>
+
+              <div
+                class="paper-result-chart"
+                role="img"
+                aria-label="Task-level success rate and task progress. EDITH outperforms three baselines across Muffin-Serving, Tumbler-Sorting, Tool-Passing, and the average."
+              >
+                <div class="paper-result-scale" aria-hidden="true">
+                  <span>100</span>
+                  <span>80</span>
+                  <span>60</span>
+                  <span>40</span>
+                  <span>20</span>
+                  <span>0</span>
+                </div>
+
+                <div class="paper-task-grid">
+                  <article class="paper-task-panel">
+                    <h4>Muffin-Serving</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 0"><b>0.0</b></span>
+                          <span class="chart-bar method-ego" style="--value: 4.2"><b>4.2</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 2.1"><b>2.1</b></span>
+                          <span class="chart-bar method-edith" style="--value: 50.0"><b>50.0</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 12.2"><b>12.2</b></span>
+                          <span class="chart-bar method-ego" style="--value: 25.3"><b>25.3</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 12.2"><b>12.2</b></span>
+                          <span class="chart-bar method-edith" style="--value: 80.6"><b>80.6</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="paper-task-panel">
+                    <h4>Tumbler-Sorting</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 0"><b>0.0</b></span>
+                          <span class="chart-bar method-ego" style="--value: 2.5"><b>2.5</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 12.5"><b>12.5</b></span>
+                          <span class="chart-bar method-edith" style="--value: 45.8"><b>45.8</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 26.2"><b>26.2</b></span>
+                          <span class="chart-bar method-ego" style="--value: 54.5"><b>54.5</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 28.5"><b>28.5</b></span>
+                          <span class="chart-bar method-edith" style="--value: 83.0"><b>83.0</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="paper-task-panel">
+                    <h4>Tool-Passing</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 12.5"><b>12.5</b></span>
+                          <span class="chart-bar method-ego" style="--value: 12.5"><b>12.5</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 14.6"><b>14.6</b></span>
+                          <span class="chart-bar method-edith" style="--value: 83.3"><b>83.3</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 31.3"><b>31.3</b></span>
+                          <span class="chart-bar method-ego" style="--value: 27.0"><b>27.0</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 40.6"><b>40.6</b></span>
+                          <span class="chart-bar method-edith" style="--value: 90.6"><b>90.6</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="paper-task-panel paper-average-panel">
+                    <h4>Average</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 4.2"><b>4.2</b></span>
+                          <span class="chart-bar method-ego" style="--value: 6.4"><b>6.4</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 9.7"><b>9.7</b></span>
+                          <span class="chart-bar method-edith" style="--value: 59.7"><b>59.7</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-lang" style="--value: 23.2"><b>23.2</b></span>
+                          <span class="chart-bar method-ego" style="--value: 35.6"><b>35.6</b></span>
+                          <span class="chart-bar method-hierarchy" style="--value: 27.1"><b>27.1</b></span>
+                          <span class="chart-bar method-edith" style="--value: 84.7"><b>84.7</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <div class="chart-legend method-legend" aria-label="Chart legend">
+                <span class="legend-lang">\(\pi_l^{\mathrm{lang}}\)</span>
+                <span class="legend-ego">\(\pi_l^{\mathrm{ego+lang}}\)</span>
+                <span class="legend-hierarchy">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                <span class="legend-edith">EDITH</span>
+              </div>
+              <div class="main-results-analysis-copy">
+                <p>
+                  Language-only baselines, \(\pi_l^{\mathrm{lang}}\) and
+                  \(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\), do not use
+                  egocentric context and
+                  <strong class="result-inline-detail">
+                    perform poorly<button
+                      class="result-poorly-detail-button"
+                      type="button"
+                      aria-label="Open fully specified language comparison"
+                      aria-controls="fully-specified-detail-results"
+                      aria-expanded="false"
+                      data-detail-toggle="#fully-specified-detail-results"
+                      data-detail-title="Additional Analysis"
+                    >+</button>
+                  </strong>,
+                  highlighting the importance of egocentric context for grounding
+                  nonverbal intent.
+                </p>
+                <p>
+                  Directly conditioning an end-to-end policy on the current
+                  egocentric context yields inconsistent benefits: it helps only
+                  when gaze remains on the target, but degrades when attention is
+                  intermittent. EDITH handles both cases more consistently by
+                  monitoring intent separately through the high-level policy.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="secondary-charts">
+            <article class="chart-panel workload-chart" data-animate>
+              <div class="chart-header">
+                <div>
+                  <div class="user-study-title-row">
+                    <span>User Study on 16 Participants</span>
+                    <button
+                      class="detail-inline-button"
+                      type="button"
+                      aria-label="Open detailed user study results"
+                      aria-controls="workload-detail-results"
+                      aria-expanded="false"
+                      data-detail-toggle="#workload-detail-results"
+                      data-detail-title="User Study Details"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <h3>EDITH reduces workload of humans in conveying their intent to the robot</h3>
+                </div>
+              </div>
+
+              <div class="user-study-participants" data-user-study-carousel>
+                <div class="user-study-participants-copy">
+                  <span>
+                    We conducted the user study with 16 participants to evaluate
+                    the workload of conveying intent to the robot. The study was
+                    IRB-approved.
+                  </span>
+                </div>
+                <div class="user-study-carousel-viewport" aria-label="User study participant examples">
+                  <div class="user-study-carousel-track">
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user1.jpg" alt="User study participant 1" loading="lazy" decoding="async">
+                    </figure>
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user2.jpg" alt="User study participant 2" loading="lazy" decoding="async">
+                    </figure>
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user3.jpg" alt="User study participant 3" loading="lazy" decoding="async">
+                    </figure>
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user4.jpg" alt="User study participant 4" loading="lazy" decoding="async">
+                    </figure>
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user5.jpg" alt="User study participant 5" loading="lazy" decoding="async">
+                    </figure>
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user6.jpg" alt="User study participant 6" loading="lazy" decoding="async">
+                    </figure>
+                    <figure class="user-study-participant">
+                      <img src="assets/user_study/user7.jpg" alt="User study participant 7" loading="lazy" decoding="async">
+                    </figure>
+                  </div>
+                </div>
+              </div>
+
+              <div class="workload-bar-chart" aria-label="Instruction workload on a 7-point Likert scale. Lower is better.">
+                <article
+                  class="workload-task"
+                  role="img"
+                  aria-label="Muffin-Serving: language-only hierarchy 4.83, EDITH 2.41."
+                >
+                  <h4>Muffin-Serving</h4>
+                  <div class="workload-bars">
+                    <div class="workload-row baseline">
+                      <div class="workload-track" style="--bar: 63.8%; --err-width: 30%; --value-left: 87.5%">
+                        <span class="workload-bar"></span>
+                        <i></i>
+                        <b class="workload-value">4.83</b>
+                      </div>
+                    </div>
+                    <div class="workload-row edith">
+                      <div class="workload-track" style="--bar: 23.5%; --err-width: 30%; --value-left: 48%">
+                        <span class="workload-bar"></span>
+                        <i></i>
+                        <b class="workload-value">2.41</b>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="workload-task-axis" aria-hidden="true">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                    <span>6</span>
+                    <span>7</span>
+                  </div>
+                </article>
+
+                <article
+                  class="workload-task"
+                  role="img"
+                  aria-label="Tool-Passing: language-only hierarchy 4.30, EDITH 2.20."
+                >
+                  <h4>Tool-Passing</h4>
+                  <div class="workload-bars">
+                    <div class="workload-row baseline">
+                      <div class="workload-track" style="--bar: 55%; --err-width: 35%; --value-left: 78%">
+                        <span class="workload-bar"></span>
+                        <i></i>
+                        <b class="workload-value">4.30</b>
+                      </div>
+                    </div>
+                    <div class="workload-row edith">
+                      <div class="workload-track" style="--bar: 20%; --err-width: 28.3%; --value-left: 43%">
+                        <span class="workload-bar"></span>
+                        <i></i>
+                        <b class="workload-value">2.20</b>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="workload-task-axis" aria-hidden="true">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                    <span>6</span>
+                    <span>7</span>
+                  </div>
+                </article>
+
+                <div class="workload-axis-title">
+                  Instruction Workload <span>(Lower is better &darr;)</span>
+                </div>
+
+                <div class="workload-legend" aria-hidden="true">
+                  <span class="baseline">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                  <span class="edith">EDITH</span>
+                </div>
+              </div>
+              <div class="workload-results-copy">
+                <p>
+                  EDITH reduces the effort users must spend to convey their intent.
+                  Compared with the \(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)
+                  baseline, EDITH substantially lowers instruction workload on both
+                  Muffin-Serving and Tool-Passing, and the reduction is statistically
+                  significant (\(p &lt; 0.001\)).
+                </p>
+                <p>
+                  The baseline places much of the burden on the user: participants
+                  must verbally describe each target object precisely enough to
+                  disambiguate it, including attributes such as color, position, and
+                  surrounding objects. EDITH instead lets users pair brief utterances
+                  with nonverbal expressions such as gaze and pointing, removing the
+                  need to fully verbalize the target.
+                </p>
+              </div>
+            </article>
+            <div class="analysis-subsection-heading" data-animate>
+              <h3>Analysis</h3>
+            </div>
+
+            <article class="chart-panel robustness-chart analysis-chart" data-animate>
+              <div class="chart-header">
+                <div>
+                  <span>Q: How does EDITH perform when humans are distracted?</span>
+                  <p class="analysis-answer">
+                    <span class="analysis-answer-label">A:</span>
+                    In natural interaction, human attention can shift to unrelated
+                    activities such as briefly checking a phone. We test this in
+                    Muffin-Serving by having the human alternate between checking a text
+                    message and requesting muffins until all three are requested. EDITH's
+                    SR and TP remain comparable to the non-distracted setting, with only a
+                    0.5% relative drop in task progress.
+                  </p>
+                </div>
+              </div>
+
+              <div class="robustness-paper-chart" role="img" aria-label="Figure 9 style robustness to distraction on Muffin-Serving.">
+                <article class="robustness-metric">
+                  <h4>Success Rate (%)</h4>
+                  <div class="robustness-bars">
+                    <div class="robust-row edith"><span>EDITH</span><div class="robust-track"><i style="--value: 50.0"><b>50.0</b></i></div></div>
+                    <div class="robust-row edith distract"><span>EDITH w/ Distract</span><div class="robust-track"><i style="--value: 47.9"><b>47.9</b></i></div></div>
+                    <div class="robust-row ablation"><span>\(\pi_l^{\mathrm{ego+lang}}\)</span><div class="robust-track"><i style="--value: 4.2"><b>4.2</b></i></div></div>
+                    <div class="robust-row ablation distract"><span>\(\pi_l^{\mathrm{ego+lang}}\) w/ Distract</span><div class="robust-track"><i style="--value: 0"><b>0.0</b></i></div></div>
+                  </div>
+                  <div class="robust-axis" aria-hidden="true"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+                </article>
+
+                <article class="robustness-metric">
+                  <h4>Task Progress (%)</h4>
+                  <div class="robustness-bars">
+                    <div class="robust-row edith"><span>EDITH</span><div class="robust-track"><i style="--value: 80.6"><b>80.6</b></i></div></div>
+                    <div class="robust-row edith distract"><span>EDITH w/ Distract</span><div class="robust-track"><i style="--value: 80.2"><b>80.2</b></i></div></div>
+                    <div class="robust-row ablation"><span>\(\pi_l^{\mathrm{ego+lang}}\)</span><div class="robust-track"><i style="--value: 25.3"><b>25.3</b></i></div></div>
+                    <div class="robust-row ablation distract"><span>\(\pi_l^{\mathrm{ego+lang}}\) w/ Distract</span><div class="robust-track"><i style="--value: 20.8"><b>20.8</b></i></div></div>
+                  </div>
+                  <div class="robust-axis" aria-hidden="true"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+                </article>
+              </div>
+              <div class="chart-legend method-legend" aria-label="Robustness legend">
+                <span class="legend-edith">EDITH</span>
+                <span class="legend-edith-distract">EDITH w/ distract</span>
+                <span class="legend-ablation">\(\pi_l^{\mathrm{ego+lang}}\)</span>
+                <span class="legend-ablation-distract">\(\pi_l^{\mathrm{ego+lang}}\) w/ distract</span>
+              </div>
+              <figure class="robustness-demo-video">
+                <video autoplay muted loop playsinline preload="metadata" aria-label="EDITH running under distracting human activity">
+                  <source src="assets/videos/edith_distraction.mp4" type="video/mp4">
+                </video>
+                <figcaption>EDITH under distracting human activity.</figcaption>
+              </figure>
+            </article>
+
+            <article class="chart-panel ablation-chart analysis-chart" data-animate>
+              <div class="chart-header">
+                <div>
+                  <span>Q: What is the effect of using keyframe as a subtask representation?</span>
+                  <p class="analysis-answer">
+                    <span class="analysis-answer-label">A:</span>
+                    To isolate the keyframe's contribution, we compare EDITH with a
+                    hierarchical no-keyframe baseline: \(\pi_h\) still maps egocentric
+                    context and language into subtasks, but \(\pi_l\) receives only the
+                    subtask instruction. Removing the keyframe drops SR/TP by 49.9/51.5
+                    points on average. This happens because \(\pi_h\) can hallucinate the
+                    wrong target when verbalizing nonverbal signals, and semantically
+                    correct subtasks can be phrased in ways unseen during \(\pi_l\)'s
+                    training. Since EDITH retrieves the keyframe from the egocentric stream
+                    instead of generating it as text, it avoids both hallucination and
+                    ambiguous phrasing.
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="paper-result-chart paper-three-panel paper-two-method"
+                role="img"
+                aria-label="Figure 8 style keyframe ablation. EDITH outperforms the no-keyframe ablation across all three tasks."
+              >
+                <div class="paper-result-scale" aria-hidden="true">
+                  <span>100</span>
+                  <span>80</span>
+                  <span>60</span>
+                  <span>40</span>
+                  <span>20</span>
+                  <span>0</span>
+                </div>
+
+                <div class="paper-task-grid">
+                  <article class="paper-task-panel">
+                    <h4>Muffin-Serving</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-ablation" style="--value: 2.1"><b>2.1</b></span>
+                          <span class="chart-bar method-edith" style="--value: 50.0"><b>50.0</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-ablation" style="--value: 11.8"><b>11.8</b></span>
+                          <span class="chart-bar method-edith" style="--value: 80.6"><b>80.6</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="paper-task-panel">
+                    <h4>Tumbler-Sorting</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-ablation" style="--value: 2.5"><b>2.5</b></span>
+                          <span class="chart-bar method-edith" style="--value: 45.8"><b>45.8</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-ablation" style="--value: 36.8"><b>36.8</b></span>
+                          <span class="chart-bar method-edith" style="--value: 83.0"><b>83.0</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="paper-task-panel">
+                    <h4>Tool-Passing</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-ablation" style="--value: 25.0"><b>25.0</b></span>
+                          <span class="chart-bar method-edith" style="--value: 83.3"><b>83.3</b></span>
+                        </div>
+                        <strong>SR (%)</strong>
+                      </div>
+                      <div class="paper-metric">
+                        <div class="paper-bars">
+                          <span class="chart-bar method-ablation" style="--value: 51.0"><b>51.0</b></span>
+                          <span class="chart-bar method-edith" style="--value: 90.6"><b>90.6</b></span>
+                        </div>
+                        <strong>TP (%)</strong>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <div class="chart-legend method-legend" aria-label="Ablation legend">
+                <span class="legend-ablation">EDITH w/o \(C^{\mathrm{key}}\)</span>
+                <span class="legend-edith">EDITH</span>
+              </div>
+            </article>
+
+            <article class="chart-panel appendix-chart analysis-chart fully-specified-detail-chart" id="fully-specified-detail-results" hidden>
+              <div class="chart-header">
+                <div>
+                  <h3>
+                    Comparison to \(\pi_l^{\mathrm{lang}}\) provided with a
+                    fully-specified language instruction.
+                  </h3>
+                </div>
+              </div>
+
+              <div class="fully-specified-detail-copy">
+                <p>
+                  We also evaluate \(\pi_l^{\mathrm{lang}}\) with fully specified
+                  instructions that explicitly name each target object, and compare
+                  it with EDITH using underspecified language accompanied by
+                  nonverbal signals.
+                </p>
+                <p>
+                  Even without fully specified language, EDITH achieves higher
+                  success rate, showing that it effectively leverages nonverbal
+                  signals to capture human intent. In contrast,
+                  \(\pi_l^{\mathrm{lang}}\) often fails even with detailed verbal
+                  instructions because the evaluation scenes contain densely
+                  cluttered and visually similar targets.
+                </p>
+                <p>
+                  In Tool-Passing, for example, multiple screwdrivers look similar;
+                  in Muffin-Serving, muffins differ only by small toppings. Requiring
+                  users to fully verbalize these details also imposes substantial
+                  workload. EDITH matches or surpasses fully specified language
+                  without requiring that burden.
+                </p>
+              </div>
+
+              <div
+                class="paper-result-chart paper-three-panel paper-two-method"
+                role="img"
+                aria-label="Comparison to fully specified language."
+              >
+                <div class="paper-result-scale" aria-hidden="true">
+                  <span>100</span><span>80</span><span>60</span><span>40</span><span>20</span><span>0</span>
+                </div>
+
+                <div class="paper-task-grid">
+                  <article class="paper-task-panel">
+                    <h4>Muffin-Serving</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                      <div class="paper-metric"><div class="paper-bars"><span class="chart-bar method-ablation" style="--value: 16.7"><b>16.7</b></span><span class="chart-bar method-edith" style="--value: 50.0"><b>50.0</b></span></div><strong>SR (%)</strong></div>
+                      <div class="paper-metric"><div class="paper-bars"><span class="chart-bar method-ablation" style="--value: 41.0"><b>41.0</b></span><span class="chart-bar method-edith" style="--value: 80.6"><b>80.6</b></span></div><strong>TP (%)</strong></div>
+                    </div>
+                  </article>
+                  <article class="paper-task-panel">
+                    <h4>Tumbler-Sorting</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                      <div class="paper-metric"><div class="paper-bars"><span class="chart-bar method-ablation" style="--value: 43.8"><b>43.8</b></span><span class="chart-bar method-edith" style="--value: 45.8"><b>45.8</b></span></div><strong>SR (%)</strong></div>
+                      <div class="paper-metric"><div class="paper-bars"><span class="chart-bar method-ablation" style="--value: 76.4"><b>76.4</b></span><span class="chart-bar method-edith" style="--value: 83.0"><b>83.0</b></span></div><strong>TP (%)</strong></div>
+                    </div>
+                  </article>
+                  <article class="paper-task-panel">
+                    <h4>Tool-Passing</h4>
+                    <div class="paper-panel-plot">
+                      <div class="paper-grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                      <div class="paper-metric"><div class="paper-bars"><span class="chart-bar method-ablation" style="--value: 56.3"><b>56.3</b></span><span class="chart-bar method-edith" style="--value: 83.3"><b>83.3</b></span></div><strong>SR (%)</strong></div>
+                      <div class="paper-metric"><div class="paper-bars"><span class="chart-bar method-ablation" style="--value: 74.5"><b>74.5</b></span><span class="chart-bar method-edith" style="--value: 90.6"><b>90.6</b></span></div><strong>TP (%)</strong></div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <div class="chart-legend method-legend" aria-label="Fully specified language comparison legend">
+                <span class="legend-ablation">\(\pi_l^{\mathrm{lang}}\) fully specified</span>
+                <span class="legend-edith">EDITH</span>
+              </div>
+            </article>
+
+            <article class="chart-panel appendix-workload-chart user-study-detail-chart" id="workload-detail-results" hidden>
+              <div class="user-study-detail-summary">
+                <section>
+                  <h4>Participants</h4>
+                  <p>
+                    We recruited 16 participants (6 female, 10 male; ages 20-40).
+                    All participants were native Korean speakers with no or limited
+                    prior experience interacting with collaborative robots. Each
+                    participant was compensated 10,000 KRW for approximately 30
+                    minutes of participation.
+                  </p>
+                </section>
+
+                <section>
+                  <h4>Procedure</h4>
+                  <figure class="user-study-procedure-figure">
+                    <img src="assets/userstudy_procedure.png" alt="Overview of the user study procedure">
+                  </figure>
+                  <p>
+                    Each participant experienced both methods across the two tasks
+                    in a within-subjects design.
+                  </p>
+                  <p>
+                    <strong>Orientation.</strong> Participants first attended a brief
+                    orientation session that introduced the study purpose and procedure,
+                    then watched videos of the robot performing the tasks to become
+                    familiar with the setup. To reduce potential bias, the two methods
+                    were referred to only as color labels: System Blue for the baseline
+                    \(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\), and System
+                    Purple for EDITH.
+                  </p>
+                  <p>
+                    <strong>Condition-specific instructions.</strong> In the baseline
+                    condition, participants used verbal instructions alone, including
+                    attributes such as color, location, and name, without gestures or
+                    gaze. In the EDITH condition, they used brief verbal references
+                    together with nonverbal signals such as pointing gestures and gaze.
+                  </p>
+                  <p>
+                    <strong>Tasks and goal presentation.</strong> At the beginning of
+                    each trial, participants were shown a goal image. Muffin-Serving
+                    goals showed a specified muffin served on a plate, while Passing
+                    Tools goals showed an assembly instruction diagram. Goals were
+                    shown as images, not text, so participants would express intent in
+                    their own words rather than copy written instructions.
+                  </p>
+                  <p>
+                    <strong>Trials and survey.</strong> For each task-condition
+                    combination, participants performed three trials with different
+                    goals. Task and condition order were counterbalanced. After each
+                    condition, participants completed the survey, resulting in 12 trials
+                    and 4 survey responses per participant.
+                  </p>
+                </section>
+
+                <section>
+                  <h4>Survey Items</h4>
+                  <p>
+                    <strong>Instruction workload.</strong> We adapted four items
+                    corresponding to NASA-TLX dimensions relevant to our context and
+                    converted them to a 7-point Likert scale (1 = strongly disagree,
+                    7 = strongly agree). The survey was administered in Korean; we
+                    report English translations of the items below.
+                  </p>
+                  <ol>
+                    <li>Expressing my intention to the robot required a lot of mental effort.</li>
+                    <li>It was difficult to successfully convey what I wanted to the robot.</li>
+                    <li>I had to put in a lot of effort to get the robot to perform the behavior I wanted.</li>
+                    <li>I felt frustrated, annoyed, or irritated while expressing my intention to the robot.</li>
+                  </ol>
+                </section>
+
+                <section>
+                  <h4>Statistical Analysis</h4>
+                  <p>
+                    Because Likert responses may not satisfy the normality assumption,
+                    we used the Wilcoxon signed-rank test for paired comparisons
+                    between the two conditions. Effect sizes are reported as
+                    \(r = Z / \sqrt{N}\).
+                  </p>
+                </section>
+
+                <section>
+                  <h4>Survey Results</h4>
+                  <p>
+                    EDITH produced lower workload scores than the baseline on all four
+                    survey items and both tasks, with every comparison statistically
+                    significant (p &lt; 0.01). Effect sizes ranged from \(r = 0.74\) to
+                    \(0.89\), indicating large effects.
+                  </p>
+                  <p>
+                    The largest effects appeared for mental demand and successful intent
+                    conveyance, suggesting that precisely verbalizing target attributes
+                    is a major source of workload in the language-only baseline. Under
+                    EDITH, workload stayed consistently low across tasks, indicating
+                    that nonverbal cues reduced the burden of conveying intent.
+                  </p>
+                </section>
+              </div>
+
+              <p class="likert-significance-note">
+                *** p &lt; 0.001, ** p &lt; 0.01.
+              </p>
+              <div class="likert-distribution-chart" role="img" aria-label="Distribution of 7-point Likert workload responses for Serving Muffins and Passing Tools.">
+                <article class="likert-task">
+                  <h4>Serving Muffins</h4>
+                  <div class="likert-header" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span>Mean(SD)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q1. Expressing my intention to the robot required a lot of mental effort.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q1 baseline responses">
+                      <i class="likert-1" style="--w: 6.25%">1</i><i class="likert-3" style="--w: 12.5%">2</i><i class="likert-4" style="--w: 6.25%">1</i><i class="likert-5" style="--w: 25%">4</i><i class="likert-6" style="--w: 31.25%">5</i><i class="likert-7" style="--w: 18.75%">3</i>
+                    </div>
+                    <span class="likert-mean">5.19(1.52)</span>
+                    <span class="likert-sig" aria-hidden="true">***</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q1 EDITH responses">
+                      <i class="likert-1" style="--w: 37.5%">6</i><i class="likert-2" style="--w: 18.75%">3</i><i class="likert-3" style="--w: 25%">4</i><i class="likert-5" style="--w: 18.75%">3</i>
+                    </div>
+                    <span class="likert-mean">2.44(1.50)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q2. It was difficult to successfully convey what I wanted to the robot.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q2 baseline responses">
+                      <i class="likert-1" style="--w: 6.25%">1</i><i class="likert-3" style="--w: 6.25%">1</i><i class="likert-5" style="--w: 50%">8</i><i class="likert-6" style="--w: 18.75%">3</i><i class="likert-7" style="--w: 18.75%">3</i>
+                    </div>
+                    <span class="likert-mean">5.19(1.52)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q2 EDITH responses">
+                      <i class="likert-1" style="--w: 37.5%">6</i><i class="likert-2" style="--w: 31.25%">5</i><i class="likert-3" style="--w: 6.25%">1</i><i class="likert-5" style="--w: 25%">4</i>
+                    </div>
+                    <span class="likert-mean">2.44(1.63)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q3. I had to put in a lot of effort to get the robot to perform the behavior I wanted.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q3 baseline responses">
+                      <i class="likert-1" style="--w: 6.25%">1</i><i class="likert-3" style="--w: 18.75%">3</i><i class="likert-4" style="--w: 6.25%">1</i><i class="likert-5" style="--w: 25%">4</i><i class="likert-6" style="--w: 25%">4</i><i class="likert-7" style="--w: 18.75%">3</i>
+                    </div>
+                    <span class="likert-mean">5.00(1.59)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q3 EDITH responses">
+                      <i class="likert-1" style="--w: 37.5%">6</i><i class="likert-2" style="--w: 25%">4</i><i class="likert-3" style="--w: 18.75%">3</i><i class="likert-5" style="--w: 12.5%">2</i><i class="likert-7" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">2.50(1.79)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q4. I felt frustrated, annoyed, or irritated while expressing my intention to the robot.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q4 baseline responses">
+                      <i class="likert-1" style="--w: 12.5%">2</i><i class="likert-2" style="--w: 12.5%">2</i><i class="likert-3" style="--w: 25%">4</i><i class="likert-4" style="--w: 6.25%">1</i><i class="likert-5" style="--w: 12.5%">2</i><i class="likert-6" style="--w: 25%">4</i><i class="likert-7" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">3.94(1.95)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Serving Muffins Q4 EDITH responses">
+                      <i class="likert-1" style="--w: 43.75%">7</i><i class="likert-2" style="--w: 25%">4</i><i class="likert-3" style="--w: 6.25%">1</i><i class="likert-4" style="--w: 12.5%">2</i><i class="likert-5" style="--w: 12.5%">2</i>
+                    </div>
+                    <span class="likert-mean">2.25(1.48)</span>
+                  </div>
+
+                  <div class="likert-count-axis" aria-hidden="true"><span>0</span><span>4</span><span>8</span><span>12</span><span>16</span></div>
+                  <div class="likert-count-axis-title">Number of Responses</div>
+                </article>
+
+                <article class="likert-task">
+                  <h4>Passing Tools</h4>
+                  <div class="likert-header" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span>Mean(SD)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q1. Expressing my intention to the robot required a lot of mental effort.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q1 baseline responses">
+                      <i class="likert-1" style="--w: 6.25%">1</i><i class="likert-2" style="--w: 6.25%">1</i><i class="likert-3" style="--w: 6.25%">1</i><i class="likert-4" style="--w: 12.5%">2</i><i class="likert-5" style="--w: 43.75%">7</i><i class="likert-6" style="--w: 25%">4</i>
+                    </div>
+                    <span class="likert-mean">4.56(1.46)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q1 EDITH responses">
+                      <i class="likert-1" style="--w: 31.25%">5</i><i class="likert-2" style="--w: 37.5%">6</i><i class="likert-3" style="--w: 25%">4</i><i class="likert-6" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">2.19(1.28)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q2. It was difficult to successfully convey what I wanted to the robot.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q2 baseline responses">
+                      <i class="likert-2" style="--w: 12.5%">2</i><i class="likert-3" style="--w: 6.25%">1</i><i class="likert-4" style="--w: 25%">4</i><i class="likert-5" style="--w: 31.25%">5</i><i class="likert-6" style="--w: 18.75%">3</i><i class="likert-7" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">4.56(1.41)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q2 EDITH responses">
+                      <i class="likert-1" style="--w: 31.25%">5</i><i class="likert-2" style="--w: 43.75%">7</i><i class="likert-3" style="--w: 12.5%">2</i><i class="likert-5" style="--w: 6.25%">1</i><i class="likert-6" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">2.25(1.44)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q3. I had to put in a lot of effort to get the robot to perform the behavior I wanted.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q3 baseline responses">
+                      <i class="likert-1" style="--w: 6.25%">1</i><i class="likert-3" style="--w: 25%">4</i><i class="likert-4" style="--w: 18.75%">3</i><i class="likert-5" style="--w: 25%">4</i><i class="likert-6" style="--w: 25%">4</i>
+                    </div>
+                    <span class="likert-mean">4.38(1.31)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q3 EDITH responses">
+                      <i class="likert-1" style="--w: 37.5%">6</i><i class="likert-2" style="--w: 31.25%">5</i><i class="likert-3" style="--w: 6.25%">1</i><i class="likert-4" style="--w: 12.5%">2</i><i class="likert-5" style="--w: 6.25%">1</i><i class="likert-6" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">2.38(1.59)</span>
+                  </div>
+
+                  <div class="likert-question">
+                    <h5>Q4. I felt frustrated, annoyed, or irritated while expressing my intention to the robot.</h5>
+                    <span class="likert-method">\(\pi_h^{\mathrm{lang}} + \pi_l^{\mathrm{lang}}\)</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q4 baseline responses">
+                      <i class="likert-1" style="--w: 18.75%">3</i><i class="likert-2" style="--w: 6.25%">1</i><i class="likert-3" style="--w: 25%">4</i><i class="likert-4" style="--w: 6.25%">1</i><i class="likert-5" style="--w: 25%">4</i><i class="likert-6" style="--w: 18.75%">3</i>
+                    </div>
+                    <span class="likert-mean">3.69(1.82)</span>
+                    <span class="likert-sig" aria-hidden="true">**</span>
+                    <span class="likert-method">EDITH</span>
+                    <div class="likert-stack" aria-label="Passing Tools Q4 EDITH responses">
+                      <i class="likert-1" style="--w: 56.25%">9</i><i class="likert-2" style="--w: 12.5%">2</i><i class="likert-3" style="--w: 12.5%">2</i><i class="likert-4" style="--w: 12.5%">2</i><i class="likert-5" style="--w: 6.25%">1</i>
+                    </div>
+                    <span class="likert-mean">2.00(1.37)</span>
+                  </div>
+
+                  <div class="likert-count-axis" aria-hidden="true"><span>0</span><span>4</span><span>8</span><span>12</span><span>16</span></div>
+                  <div class="likert-count-axis-title">Number of Responses</div>
+                </article>
+
+                <div class="likert-legend" aria-label="Likert response scale legend">
+                  <span><i class="likert-1"></i>1 Strongly disagree</span>
+                  <span><i class="likert-2"></i>2 Disagree</span>
+                  <span><i class="likert-3"></i>3 Slightly disagree</span>
+                  <span><i class="likert-4"></i>4 Neutral</span>
+                  <span><i class="likert-5"></i>5 Slightly agree</span>
+                  <span><i class="likert-6"></i>6 Agree</span>
+                  <span><i class="likert-7"></i>7 Strongly agree</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section demo-section" id="demos">
+        <div class="section-inner">
+          <div class="section-heading wide">
+            <h2>Evaluation Tasks</h2>
+            <p class="section-lede">
+              Three tasks require grounding underspecified language in nonverbal signals.
+            </p>
+            <p>
+              In each task, the language instruction does not fully specify the
+              target: the robot must interpret the human's eye gaze or gestures
+              to identify the target objects and complete the requested task.
+            </p>
+          </div>
+
+          <div class="task-grid">
+            <article class="task-card">
+              <figure class="task-card-figure">
+                <img src="assets/muffin-serving.png" alt="Muffin-Serving task setup">
+              </figure>
+              <p class="metric-label">Task 01</p>
+              <h3>Muffin-Serving</h3>
+              <p>
+                Six muffins are densely arranged. The human requests three
+                muffins while consecutively pointing at each one.
+              </p>
+            </article>
+            <article class="task-card">
+              <figure class="task-card-figure">
+                <img src="assets/tumbler-sorting.png" alt="Tumbler-Sorting task setup">
+              </figure>
+              <p class="metric-label">Task 02</p>
+              <h3>Tumbler-Sorting</h3>
+              <p>
+                Five tumblers and two baskets are placed on the table. The human
+                points to tumblers and baskets to specify a multi-step sorting request.
+              </p>
+            </article>
+            <article class="task-card">
+              <figure class="task-card-figure">
+                <img src="assets/tool-passing.png" alt="Tool-Passing task setup">
+              </figure>
+              <p class="metric-label">Task 03</p>
+              <h3>Tool-Passing</h3>
+              <p>
+                While the human is assembling something with both hands, they
+                request the tool they need through a brief utterance and a
+                glance, and the robot hands it over.
+              </p>
+            </article>
+          </div>
+          <div class="task-scroll-cue" aria-hidden="true">
+            <span></span>
+          </div>
+
+          <div class="task-carousel" aria-live="polite">
+            <div class="task-carousel-heading">
+              <div>
+                <p class="section-kicker" id="task-counter">Task 01 / 03</p>
+                <h3 id="task-title">Muffin-Serving</h3>
+                <button
+                  class="task-audio-toggle is-on"
+                  id="task-audio-toggle"
+                  type="button"
+                  aria-label="Turn task video sound off"
+                  aria-pressed="true"
+                >
+                  <span data-task-audio-label>Sound on</span>
+                </button>
+              </div>
+              <p id="task-description" hidden></p>
+            </div>
+
+            <div class="task-carousel-viewport">
+              <div class="task-slide-track" id="task-slide-track" aria-label="Task video comparison">
+                <article class="task-slide is-active" data-task-index="0" aria-label="Muffin-Serving comparison">
+                  <div class="comparison-videos">
+                    <article class="comparison-panel text-panel" data-method="text">
+                      <div class="comparison-label">
+                        <span><span class="method-symbol">&pi;<sub>0.5</sub></span><small>(language-conditioned policy)</small></span>
+                        <strong>Fully-specified verbal instruction</strong>
+                      </div>
+                      <div class="comparison-media">
+                        <video muted playsinline preload="metadata" poster="assets/posters/muffin-text.jpg">
+                          <source src="assets/videos/muffin_textvla.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </article>
+
+                    <article class="comparison-panel edith-panel" data-method="edith">
+                      <div class="comparison-label">
+                        <span>EDITH</span>
+                        <strong>Verbal instruction + nonverbal signals</strong>
+                      </div>
+                      <div class="comparison-media">
+                        <video muted playsinline preload="metadata" poster="assets/posters/muffin-edith.jpg">
+                          <source src="assets/videos/muffin_edith.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </article>
+                  </div>
+                </article>
+
+                <article class="task-slide" data-task-index="1" aria-label="Tumbler-Sorting comparison">
+                  <div class="comparison-videos">
+                    <article class="comparison-panel text-panel" data-method="text">
+                      <div class="comparison-label">
+                        <span><span class="method-symbol">&pi;<sub>0.5</sub></span><small>(language-conditioned policy)</small></span>
+                        <strong>Fully-specified verbal instruction</strong>
+                      </div>
+                      <div class="comparison-media">
+                        <video muted playsinline preload="metadata" poster="assets/posters/tumbler-text.jpg">
+                          <source src="assets/videos/tumbler_text_vla.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </article>
+
+                    <article class="comparison-panel edith-panel" data-method="edith">
+                      <div class="comparison-label">
+                        <span>EDITH</span>
+                        <strong>Verbal instruction + nonverbal signals</strong>
+                      </div>
+                      <div class="comparison-media">
+                        <video muted playsinline preload="metadata" poster="assets/posters/tumbler-edith.jpg">
+                          <source src="assets/videos/tumbler_edith.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </article>
+                  </div>
+                </article>
+
+                <article class="task-slide" data-task-index="2" aria-label="Tool-Passing comparison">
+                  <div class="comparison-videos">
+                    <article class="comparison-panel text-panel" data-method="text">
+                      <div class="comparison-label">
+                        <span><span class="method-symbol">&pi;<sub>0.5</sub></span><small>(language-conditioned policy)</small></span>
+                        <strong>Fully-specified verbal instruction</strong>
+                      </div>
+                      <div class="comparison-media">
+                        <video muted playsinline preload="metadata" poster="assets/posters/passing-tool-text.jpg">
+                          <source src="assets/videos/passing_tool_textvla.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </article>
+
+                    <article class="comparison-panel edith-panel" data-method="edith">
+                      <div class="comparison-label">
+                        <span>EDITH</span>
+                        <strong>Verbal instruction + nonverbal signals</strong>
+                      </div>
+                      <div class="comparison-media">
+                        <video muted playsinline preload="metadata" poster="assets/posters/passing-tool-edith.jpg">
+                          <source src="assets/videos/edith_passing_tool.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </article>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <div class="task-carousel-cue" aria-hidden="true">
+              <span></span>
+            </div>
+
+            <div class="carousel-controls" aria-label="Task carousel controls">
+              <button class="carousel-arrow" id="task-prev" type="button" aria-label="Previous task">
+                <span aria-hidden="true">&lsaquo;</span>
+              </button>
+              <div class="task-dots" id="task-dots" role="tablist" aria-label="Select task">
+                <button class="is-active" type="button" data-task-index="0" data-short="Muffin" role="tab" aria-selected="true">Muffin-Serving</button>
+                <button type="button" data-task-index="1" data-short="Tumbler" role="tab" aria-selected="false">Tumbler-Sorting</button>
+                <button type="button" data-task-index="2" data-short="Tool" role="tab" aria-selected="false">Tool-Passing</button>
+              </div>
+              <button class="carousel-arrow next" id="task-next" type="button" aria-label="Next task">
+                <span aria-hidden="true">&rsaquo;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section citation-section" id="citation">
+        <div class="section-inner split">
+          <div>
+            <h2>Citation</h2>
+            <p>
+              If you find our work useful, please cite the paper using the
+              BibTeX entry on the right.
+            </p>
+          </div>
+          <div class="citation-box">
+            <pre><code id="bibtex">@article{lee2026hierarchicalpoliciesverbalegocentric,
+      title={Hierarchical Policies from Verbal and Egocentric Human Signals for Natural Human-Robot Interaction},
+      author={Dongjun Lee and Juheon Choi and Dong Kyu Shin and Sinjae Kang and Kimin Lee},
+      year={2026},
+      url={https://arxiv.org/abs/2606.10276},
+}</code></pre>
+            <button class="button copy-button" type="button" data-copy="#bibtex">
+              Copy BibTeX
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="noisy-modal" id="noisy-modal" aria-labelledby="noisy-modal-title">
+      <div class="noisy-modal-panel">
+        <button class="noisy-modal-close" type="button" data-noisy-modal-close aria-label="Close noisy signal example">
+          &times;
+        </button>
+        <h3 id="noisy-modal-title">Why are human signals noisy?</h3>
+        <video
+          class="noisy-modal-video"
+          muted
+          playsinline
+          preload="metadata"
+          data-video-sequence="assets/videos/noisy1.mp4,assets/videos/noisy2.mp4,assets/videos/noisy3.mp4,assets/videos/noisy5.mp4,assets/videos/noisy6.mp4"
+          aria-label="Noisy egocentric signal example"
+        >
+          <source src="assets/videos/noisy1.mp4" type="video/mp4">
+        </video>
+        <p>
+          Eye gaze can shift unstably frame by frame, and the egocentric view
+          changes frequently as the human moves. These temporal changes make
+          the signal rich but noisy.
+        </p>
+      </div>
+    </dialog>
+
+    <dialog class="detail-results-modal" id="detail-results-modal" aria-labelledby="detail-results-modal-title">
+      <div class="detail-results-modal-panel">
+        <button class="detail-results-modal-close" type="button" data-detail-modal-close aria-label="Close detail results">
+          &times;
+        </button>
+        <h3 id="detail-results-modal-title">Detailed Results</h3>
+        <div class="detail-results-modal-body" data-detail-modal-body></div>
+      </div>
+    </dialog>
+
+    <footer class="site-footer">
+      <p class="footer-credit">
+        Site designed by <a href="https://juheonchoi.com" target="_blank" rel="noopener">Juheon Choi</a>.
+      </p>
+    </footer>
+
+    <script src="assets/episode_000000_actions.js?v=episode-action-20260604"></script>
+    <script src="script.js?v=signal-fusion-20260610"></script>
+  </body>
+</html>

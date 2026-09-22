@@ -1,0 +1,519 @@
+/* ==========================================================================
+   Interactive mechanism explorer.
+   One stage, two acts (high-level / low-level), switchable across tasks.
+   Sizing is container-relative so the whole diagram scales as one object.
+   ========================================================================== */
+
+.mech-act {
+  --mech-gap: 3.2cqw;
+  --card-radius: 0.85cqw;
+}
+
+.mech-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.mech-toolbar-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mech-spacer { flex: 1 1 24px; }
+
+/* --- stage --------------------------------------------------------------- */
+
+.mech-stage {
+  container-type: inline-size;
+  container-name: mech;
+  position: relative;
+  margin-top: 20px;
+  padding: clamp(18px, 2.6cqw, 40px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.mech-act {
+  display: none;
+  position: relative;
+}
+.mech-act.is-current { display: block; }
+
+.mech-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+.mech-links path { fill: none; }
+.mech-links .link-track {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+.mech-links .link-pulse {
+  stroke: var(--flow);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 18 82;
+  animation: mech-pulse 1.9s linear infinite;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.mech-links .link-pulse.is-live { opacity: 1; }
+@keyframes mech-pulse { to { stroke-dashoffset: -100; } }
+
+.mech-node {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  min-width: 0;
+}
+
+.mech-label {
+  margin: 0 0 0.7cqw;
+  font-size: clamp(10px, 1.05cqw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* --- act 1: human signal -> high-level policy -> subtask queue ----------- */
+
+.mech-act-high {
+  display: none;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.78fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: var(--mech-gap);
+}
+.mech-act-high.is-current { display: grid; }
+
+.mech-signal-frame {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 1 / 1;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.mech-signal-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mech-signal-frame.is-firing {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.mech-glasses-badge {
+  position: absolute;
+  left: 0.7cqw;
+  top: 0.7cqw;
+  display: flex;
+  align-items: center;
+  gap: 0.5cqw;
+  padding: 0.4cqw 0.7cqw 0.4cqw 0.4cqw;
+  border-radius: 999px;
+  background: rgba(10, 12, 18, 0.62);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: clamp(8px, 0.92cqw, 11px);
+  font-weight: 550;
+  letter-spacing: 0.02em;
+}
+.mech-glasses-badge img {
+  width: clamp(16px, 1.9cqw, 26px);
+  height: clamp(16px, 1.9cqw, 26px);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mech-asr {
+  margin-top: 1cqw;
+  padding: 1cqw 1.2cqw;
+  min-height: 4.6cqw;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--card-radius);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: clamp(11px, 1.3cqw, 16px);
+  line-height: 1.45;
+  font-weight: 550;
+}
+.mech-asr small {
+  display: block;
+  margin-bottom: 0.25cqw;
+  font-size: clamp(8px, 0.85cqw, 10px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--accent-ink) 62%, transparent);
+}
+.mech-asr .mech-asr-text::after {
+  content: "";
+  display: inline-block;
+  width: 0.09em;
+  height: 1em;
+  margin-left: 0.08em;
+  vertical-align: -0.14em;
+  background: currentColor;
+  animation: mech-caret 1s steps(1) infinite;
+}
+.mech-asr.is-idle .mech-asr-text::after { display: none; }
+@keyframes mech-caret { 50% { opacity: 0; } }
+
+/* engine boxes (pi_h / pi_l) */
+
+.mech-engine {
+  display: grid;
+  gap: 0.35cqw;
+  padding: 1.5cqw 1.2cqw;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--card-radius);
+  background: var(--accent-soft);
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.mech-engine h3 {
+  margin: 0;
+  font-size: clamp(12px, 1.5cqw, 19px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.mech-engine p {
+  margin: 0;
+  font-size: clamp(10px, 1.15cqw, 14px);
+  color: var(--accent-ink);
+  font-weight: 550;
+}
+.mech-engine.is-firing {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.mech-engine-note {
+  margin: 0.9cqw 0 0;
+  font-size: clamp(9.5px, 1.05cqw, 13px);
+  line-height: 1.45;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* subtask queue */
+
+.mech-queue h3 {
+  margin: 0 0 0.8cqw;
+  font-size: clamp(11px, 1.25cqw, 15px);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.mech-queue h3 span {
+  margin-left: 0.5em;
+  font-weight: 450;
+  color: var(--muted);
+}
+
+.mech-cards {
+  display: grid;
+  gap: 0.8cqw;
+  min-height: 12cqw;
+  align-content: start;
+}
+
+.mech-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1cqw;
+  padding: 0.6cqw;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface-2);
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+/* Only cards that appear live animate in: a fill-mode entrance would pin
+   opacity:0 on cards built while their act is still display:none. */
+.mech-card.is-new { animation: mech-card-in 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes mech-card-in {
+  from { opacity: 0; transform: translateY(0.9cqw) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mech-card img {
+  display: block;
+  width: clamp(48px, 6.4cqw, 104px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: calc(var(--card-radius) - 0.25cqw);
+  background: var(--line-soft);
+}
+.mech-card small {
+  display: block;
+  font-size: clamp(8px, 0.88cqw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.mech-card h4 {
+  margin: 0.25cqw 0 0;
+  font-size: clamp(10.5px, 1.2cqw, 15px);
+  font-weight: 550;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.mech-card-state {
+  grid-column: 1 / -1;
+  display: none;
+  align-items: center;
+  gap: 0.45em;
+  font-size: clamp(8.5px, 0.95cqw, 11.5px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mech-act-low .mech-card-state { display: flex; }
+
+.mech-card.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+.mech-card.is-active .mech-card-state { color: var(--accent-ink); }
+.mech-card.is-done .mech-card-state { color: var(--ok); }
+.mech-card.is-pending { opacity: 0.55; }
+.mech-card.is-pending .mech-card-state { color: var(--muted); }
+
+.mech-queue-empty {
+  display: grid;
+  place-items: center;
+  min-height: 12cqw;
+  border: 1px dashed var(--line);
+  border-radius: var(--card-radius);
+  font-size: clamp(10px, 1.1cqw, 13px);
+  color: var(--muted);
+}
+
+/* --- act 2: queue -> low-level policy -> action ------------------------- */
+
+.mech-act-low { display: none; }
+.mech-act-low.is-current { display: block; }
+
+.mech-act-low .mech-queue { margin-bottom: calc(var(--mech-gap) * 1.15); }
+.mech-act-low .mech-cards {
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  min-height: 0;
+}
+
+.mech-exec {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.72fr) minmax(0, 0.92fr);
+  align-items: center;
+  gap: var(--mech-gap);
+}
+
+.mech-obs {
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+.mech-obs video { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+.mech-output {
+  display: grid;
+  gap: 0.8cqw;
+}
+
+.mech-readout {
+  padding: 0.9cqw 1.1cqw;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: var(--surface-2);
+}
+.mech-readout p {
+  margin: 0 0 0.35cqw;
+  font-size: clamp(9.5px, 1.05cqw, 13px);
+  font-weight: 600;
+  color: var(--muted);
+}
+.mech-readout code {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(9px, 1.02cqw, 12.5px);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mech-readout .mech-completion {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(14px, 1.9cqw, 24px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+.mech-readout .mech-completion.is-complete { color: var(--ok); }
+
+.mech-note {
+  margin: 0.55cqw 0 0;
+  font-size: clamp(8.5px, 0.92cqw, 11px);
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* --- act rail and transport --------------------------------------------- */
+
+.mech-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.mech-acts button {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13.5px;
+  font-weight: 550;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+.mech-acts button b {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.mech-acts button:hover { color: var(--ink); border-color: var(--accent-border); }
+.mech-acts button[aria-selected="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.mech-acts button[aria-selected="true"] b { color: var(--accent); }
+
+.mech-transport {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.mech-progress {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  cursor: pointer;
+  touch-action: none;
+  border-radius: 999px;
+  background: var(--line-soft);
+}
+
+/* A taller hit area than the 4px bar, without adding an in-flow box that
+   would push the fill out of the track. */
+.mech-progress::after {
+  content: "";
+  position: absolute;
+  inset: -9px 0;
+}
+
+.mech-progress i {
+  overflow: hidden;
+}
+.mech-progress i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.mech-caption {
+  margin: 16px 0 0;
+  font-size: clamp(13px, 1.3vw, 15.5px);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.mech-caption strong { font-weight: 600; color: var(--ink); }
+
+/* --- narrow layouts ------------------------------------------------------ */
+
+@container mech (max-width: 720px) {
+  .mech-act { --mech-gap: 20px; --card-radius: 10px; }
+
+  .mech-act-high.is-current,
+  .mech-exec {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mech-links { display: none; }
+
+  /* `* + *` would also catch the (hidden) connector svg and draw a stub above
+     the first real node, so the stems hang off .mech-node siblings only. */
+  .mech-act-high.is-current > .mech-node ~ .mech-node,
+  .mech-exec > .mech-node ~ .mech-node {
+    position: relative;
+  }
+  .mech-act-high.is-current > .mech-node ~ .mech-node::before,
+  .mech-exec > .mech-node ~ .mech-node::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: calc(var(--mech-gap) * -1);
+    width: 1px;
+    height: var(--mech-gap);
+    background: var(--line);
+  }
+
+  .mech-act-low .mech-cards {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+  }
+
+  .mech-label,
+  .mech-asr small,
+  .mech-card small,
+  .mech-card-state { font-size: 10px; }
+  .mech-asr { font-size: 14px; padding: 11px 13px; min-height: 0; }
+  .mech-engine { padding: 14px 12px; }
+  .mech-engine h3 { font-size: 16px; }
+  .mech-engine p, .mech-engine-note { font-size: 13px; }
+  .mech-card { padding: 8px; gap: 12px; }
+  .mech-card h4 { font-size: 14px; }
+  .mech-card img { width: 64px; }
+  .mech-queue h3 { font-size: 14px; margin-bottom: 10px; }
+  .mech-cards { gap: 10px; min-height: 0; }
+  .mech-readout { padding: 11px 13px; }
+  .mech-readout p { font-size: 12px; }
+  .mech-readout code { font-size: 11.5px; white-space: normal; }
+  .mech-readout .mech-completion { font-size: 22px; }
+  .mech-note { font-size: 11px; margin-top: 8px; }
+}
