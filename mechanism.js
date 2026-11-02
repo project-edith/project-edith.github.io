@@ -87,8 +87,18 @@
   ];
 
   const ACTS = [
-    { id: "high", index: "01", label: "High-level policy" },
-    { id: "low", index: "02", label: "Low-level policy" },
+    {
+      id: "high",
+      index: "01",
+      label: "High-level policy",
+      note: "Reads the egocentric stream and extracts keyframe-grounded subtasks.",
+    },
+    {
+      id: "low",
+      index: "02",
+      label: "Low-level policy",
+      note: "Conditions on the keyframe to produce actions.",
+    },
   ];
 
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -509,7 +519,8 @@
     actRail.innerHTML = ACTS.map(
       (a) =>
         `<li><button type="button" role="tab" data-mech-act="${a.id}" aria-selected="${a.id === act}">` +
-        `<b>${a.index}</b>${a.label}</button></li>`,
+        `<span class="mech-act-head"><b>${a.index}</b>${a.label}</span>` +
+        `<small>${a.note}</small></button></li>`,
     ).join("");
 
     taskRail.innerHTML = TASKS.map(

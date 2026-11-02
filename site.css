@@ -191,6 +191,27 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .site-nav a.is-active,
 .site-nav a[aria-current="true"] { color: var(--accent); background: var(--accent-soft); }
 
+/* Code sits apart from the reading order, so it keeps the accent colour. */
+.site-nav a.nav-code {
+  color: var(--accent);
+  font-weight: 650;
+}
+.site-nav a.nav-code:hover { background: var(--accent-soft); color: var(--accent); }
+
+/* Example use cases in the code section */
+.code-uses {
+  margin: 0 auto clamp(20px, 2.6vw, 30px);
+  padding-left: 1.3em;
+  display: grid;
+  gap: 10px;
+  max-width: 62ch;
+  text-align: left;
+  color: var(--ink-soft);
+}
+.code-uses li { line-height: 1.6; }
+.code-uses li::marker { color: var(--accent); }
+.code-links { justify-content: flex-start; }
+
 .theme-toggle {
   display: grid;
   place-items: center;

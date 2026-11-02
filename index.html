@@ -63,6 +63,7 @@
       <nav class="site-nav" aria-label="Sections">
         <a href="#idea">Idea</a>
         <a href="#hardware">Hardware</a>
+        <a class="nav-code" href="#code">Code</a>
         <a href="#mechanism">Method</a>
         <a href="#tasks">Tasks</a>
         <a href="#results">Results</a>
@@ -137,39 +138,21 @@
       <section class="section is-sunken" id="idea">
         <div class="shell" data-reveal>
           <p class="section-kicker">Motivation</p>
-          <h2>People do not say everything they mean</h2>
+          <h2>Human intent is not expressed solely through language</h2>
           <p class="section-lede">
-            A language-conditioned policy only acts on what was spelled out, so the human
-            has to verbalise their whole intent — which is slow, and often imprecise.
-            EDITH reads the rest: the first-person view and where the eyes go.
+            A language-conditioned policy acts only on what is stated explicitly, so the human
+            has to put their entire intent into words. EDITH instead conditions on the human's
+            first-person view and eye gaze together with their speech.
           </p>
 
           <figure class="figure-frame">
             <img src="assets/overview_figure.png" alt="Overview of EDITH: hardware system, hierarchical policy, and robot execution.">
             <figcaption>
-              The human's egocentric view \(C^{\mathrm{ego}}\) and speech \(\ell\) become
-              keyframe-grounded subtasks in a queue \(Q\), which the robot policy executes as
-              actions \(a_t\).
+              Humans express their intent jointly through verbal signals (e.g., speech)
+              together with nonverbal signals such as gestures, head orientation, and eye gaze.
             </figcaption>
           </figure>
 
-          <div class="duo">
-            <div class="callout">
-              <h3>Language alone</h3>
-              <p>
-                "Give me <em>this</em> one" has no referent without the scene. To reach a
-                language-conditioned policy, the human must instead produce a fully-specified
-                sentence for every step.
-              </p>
-            </div>
-            <div class="callout">
-              <h3>Language + nonverbal signals</h3>
-              <p>
-                Gaze and the first-person view resolve the reference directly, so the human can
-                speak the way they would to another person — and keep their hands on their work.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -177,11 +160,11 @@
       <section class="section" id="hardware">
         <div class="shell" data-reveal>
           <p class="section-kicker">System</p>
-          <h2>Smart glasses capture what the<br class="nv-break">human sees, looks at, and says</h2>
+          <h2>Hardware system: smart glasses capture the user's<br class="nv-break">egocentric context for the robot to act on</h2>
           <p class="section-lede">
-            The glasses pick up what the human is looking at, what they see, and what they
-            say. EDITH lines all three up with what the robot is seeing at that same moment,
-            so both sides of the interaction share one clock.
+            We build a hardware system in which the user's egocentric context — first-person
+            view, speech, and eye gaze — is captured by smart glasses and aligned with the
+            robot's observations in real time.
           </p>
 
           <div class="hw-diagram">
@@ -229,16 +212,54 @@
         </div>
       </section>
 
+      <!-- ============================== code ============================== -->
+      <section class="section is-sunken" id="code">
+        <div class="shell" data-reveal>
+          <p class="section-kicker">Code</p>
+          <h2>Codebase</h2>
+          <p class="section-lede">
+            Our experiments focus on learning policies that follow pointing- and gaze-based
+            referring instructions, but the hardware framework itself is task-agnostic, and our
+            codebase supports both data collection and inference. It can be reused for a range of
+            human-robot interactive and collaborative settings, for example:
+          </p>
+          <ul class="code-uses">
+            <li>
+              <b>Collaborative assembly.</b> The human keeps both hands on the workpiece and asks
+              for the next part or tool just by looking at it, while the robot stages and hands
+              over the right one.
+            </li>
+            <li>
+              <b>Proactive assistance.</b> Gaze and the first-person view arrive before the request
+              does, so the robot can anticipate what is needed next instead of waiting to be asked.
+            </li>
+            <li>
+              <b>Modelling human behaviour.</b> The time-aligned egocentric and robot streams form a
+              corpus for studying how people refer to things — when gaze leads speech, and when a
+              gesture alone is enough.
+            </li>
+          </ul>
+          <div class="ph-links code-links">
+            <a class="is-primary" href="https://github.com/dgjun32/edith" target="_blank" rel="noopener">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              github.com/dgjun32/edith
+            </a>
+          </div>
+        </div>
+      </section>
+
       <!-- =========================== mechanism ============================ -->
       <section class="section is-sunken mech" id="mechanism" data-mech-root>
         <div class="shell">
           <p class="section-kicker">Method</p>
-          <h2>How EDITH turns a glance into an action</h2>
+          <h2>Following referring instructions with a hierarchical policy</h2>
           <p class="section-lede">
-            Human signals are rich but noisy<button class="noisy-help-button" type="button" data-noisy-modal-open aria-label="Why are human signals noisy?">?</button>, so EDITH splits the problem in two: a high-level
-            policy that infers intent and writes subtasks, and a low-level policy that executes
-            them. The same hierarchy runs on every task — switch tasks to watch it resolve a
-            different request.
+            We design a policy that follows referring instructions grounded in nonverbal signals
+            such as pointing and eye gaze. Since these signals are rich but noisy<button class="noisy-help-button" type="button" data-noisy-modal-open aria-label="Why are human signals noisy?">?</button>, EDITH uses a
+            hierarchical policy: the high-level policy reads the egocentric stream and extracts
+            keyframe-grounded subtasks, and the low-level policy conditions on those keyframes to
+            produce actions. The same hierarchy runs on every task — switch tasks to see it
+            resolve a different request.
           </p>
 
           <div class="mech-toolbar">
@@ -363,7 +384,7 @@
               </div>
               <div class="baseline-item">
                 <dt>\(\pi_{\mathrm{FAM\text{-}HRI}} + \pi_l\)</dt>
-                <dd>Multimodal intent inference from gaze and speech as the high-level planner, paired with the same low-level policy.</dd>
+                <dd>Modular HRI pipeline that infers intent from gaze and speech in a separate module, used as the high-level planner and paired with the same low-level policy.</dd>
               </div>
             </dl>
           </div>
@@ -461,30 +482,30 @@
       <section class="section" id="ablations">
         <div class="shell" data-reveal>
           <p class="section-kicker">Ablations</p>
-          <h2>Both halves of the subtask are load-bearing</h2>
+          <h2>Ablations on the subtask representation</h2>
           <p class="section-lede">
-            A subtask is an instruction paired with a keyframe from the human's own
-            view. Remove either half on Muffin-Serving and the policy stops working.
+            A subtask is an instruction paired with a keyframe taken from the human's own
+            view. We ablate each of the two components on Muffin-Serving.
           </p>
 
           <div class="ablation-grid">
             <article class="ablation-card">
-              <h3>What does the keyframe buy us?</h3>
+              <h3>Effect of the keyframe</h3>
               <div class="ablation-chart"><svg viewBox="0 0 250 200" role="img" aria-label="EDITH w/o keyframe: SR 2.1 versus EDITH 43.8 percent, TP 17.0 versus EDITH 70.8 percent"><path d="M30 160H240" class="res-gridline"/><text x="24" y="163" text-anchor="end" class="res-axis-number">0</text><path d="M30 127.5H240" class="res-gridline"/><text x="24" y="130.5" text-anchor="end" class="res-axis-number">25</text><path d="M30 95H240" class="res-gridline"/><text x="24" y="98" text-anchor="end" class="res-axis-number">50</text><path d="M30 62.5H240" class="res-gridline"/><text x="24" y="65.5" text-anchor="end" class="res-axis-number">75</text><path d="M30 30H240" class="res-gridline"/><text x="24" y="33" text-anchor="end" class="res-axis-number">100</text><rect class="res-bar method-1" x="44" y="157.27" width="34" height="2.73"/><text class="res-value" x="61" y="152.27" text-anchor="middle">2.1</text><rect class="res-bar method-4" x="88" y="103.06" width="34" height="56.94"/><text class="res-value is-ours" x="105" y="98.06" text-anchor="middle">43.8</text><text x="105" y="182" text-anchor="middle" class="res-axis-label">SR (%)</text><rect class="res-bar method-1" x="149" y="137.9" width="34" height="22.1"/><text class="res-value" x="166" y="132.9" text-anchor="middle">17.0</text><rect class="res-bar method-4" x="193" y="67.96" width="34" height="92.04"/><text class="res-value is-ours" x="210" y="62.96" text-anchor="middle">70.8</text><text x="210" y="182" text-anchor="middle" class="res-axis-label">TP (%)</text></svg></div>
               <div class="ablation-legend">
                 <span><i class="method-1"></i>EDITH w/o keyframe</span>
                 <span class="is-ours"><i class="method-4"></i>EDITH</span>
               </div>
-              <p>Strip the keyframe out of the subtask and the low-level policy is left with an instruction alone. Success on Muffin-Serving falls from 43.8% to 2.1%: the policy knows what kind of thing to pick up, but not which one.</p>
+              <p>Without the keyframe, the low-level policy receives only the instruction. Success on Muffin-Serving drops from 43.8% to 2.1%: the policy knows what kind of object to pick up, but not which one.</p>
             </article>
             <article class="ablation-card">
-              <h3>Why capture the keyframe from the human's view?</h3>
+              <h3>Effect of the egocentric viewpoint</h3>
               <div class="ablation-chart"><svg viewBox="0 0 250 200" role="img" aria-label="EDITH w/o ego-view: SR 2.1 versus EDITH 43.8 percent, TP 26.4 versus EDITH 70.8 percent"><path d="M30 160H240" class="res-gridline"/><text x="24" y="163" text-anchor="end" class="res-axis-number">0</text><path d="M30 127.5H240" class="res-gridline"/><text x="24" y="130.5" text-anchor="end" class="res-axis-number">25</text><path d="M30 95H240" class="res-gridline"/><text x="24" y="98" text-anchor="end" class="res-axis-number">50</text><path d="M30 62.5H240" class="res-gridline"/><text x="24" y="65.5" text-anchor="end" class="res-axis-number">75</text><path d="M30 30H240" class="res-gridline"/><text x="24" y="33" text-anchor="end" class="res-axis-number">100</text><rect class="res-bar method-3" x="44" y="157.27" width="34" height="2.73"/><text class="res-value" x="61" y="152.27" text-anchor="middle">2.1</text><rect class="res-bar method-4" x="88" y="103.06" width="34" height="56.94"/><text class="res-value is-ours" x="105" y="98.06" text-anchor="middle">43.8</text><text x="105" y="182" text-anchor="middle" class="res-axis-label">SR (%)</text><rect class="res-bar method-3" x="149" y="125.68" width="34" height="34.32"/><text class="res-value" x="166" y="120.68" text-anchor="middle">26.4</text><rect class="res-bar method-4" x="193" y="67.96" width="34" height="92.04"/><text class="res-value is-ours" x="210" y="62.96" text-anchor="middle">70.8</text><text x="210" y="182" text-anchor="middle" class="res-axis-label">TP (%)</text></svg></div>
               <div class="ablation-legend">
                 <span><i class="method-3"></i>EDITH w/o ego-view</span>
                 <span class="is-ours"><i class="method-4"></i>EDITH</span>
               </div>
-              <p>Replace the egocentric keyframe with one taken from the robot's own camera and success falls the same way, to 2.1%. The information is not missing from the scene — it is missing from that viewpoint.</p>
+              <p>Replacing the egocentric keyframe with one taken from the robot's own camera drops success to 2.1% as well. The information is present in the scene, but not available from that viewpoint.</p>
             </article>
           </div>
 
