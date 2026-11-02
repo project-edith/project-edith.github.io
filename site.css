@@ -198,19 +198,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .site-nav a.nav-code:hover { background: var(--accent-soft); color: var(--accent); }
 
-/* Example use cases in the code section */
+/* Codebase callout, nested inside the hardware section */
+.callout-code { scroll-margin-top: 90px; }
 .code-uses {
-  margin: 0 auto clamp(20px, 2.6vw, 30px);
-  padding-left: 1.3em;
+  margin: 14px 0 0;
+  padding-left: 1.25em;
   display: grid;
   gap: 10px;
-  max-width: 62ch;
   text-align: left;
   color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.6;
 }
-.code-uses li { line-height: 1.6; }
 .code-uses li::marker { color: var(--accent); }
-.code-links { justify-content: flex-start; }
+.code-links {
+  justify-content: flex-start;
+  margin-top: clamp(18px, 2vw, 24px);
+}
 
 .theme-toggle {
   display: grid;
